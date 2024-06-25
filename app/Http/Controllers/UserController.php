@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -9,7 +10,7 @@ use Spatie\Permission\Models\Role;
 class UserController extends Controller
 {
     public function index()
-    {   
+    {
         $users = User::get();
         return view('role-permission.user.index', [
             'users' => $users
@@ -17,8 +18,8 @@ class UserController extends Controller
     }
 
     public function create()
-    {   
-        $roles = Role::pluck('name','name')->all();
+    {
+        $roles = Role::pluck('name', 'name')->all();
         return view('role-permission.user.create', [
             'roles' => $roles
         ]);
@@ -30,7 +31,7 @@ class UserController extends Controller
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|max:20',
             'roles' => 'required'
-            
+
         ]);
 
         $user = User::create([
@@ -40,13 +41,13 @@ class UserController extends Controller
         ]);
         $user->syncRoles($request->roles);
 
-        return redirect('users')->with('status','User created successfully with roles');
+        return redirect('users')->with('status', 'User created successfully with roles');
     }
 
     public function edit(User $user)
     {
-        $roles = Role::pluck('name','name')->all();
-        $userRoles = $user->roles->pluck('name','name')->all();
+        $roles = Role::pluck('name', 'name')->all();
+        $userRoles = $user->roles->pluck('name', 'name')->all();
         return view('role-permission.user.edit', [
             'user' => $user,
             'roles' => $roles,
@@ -60,27 +61,27 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'password' => 'nullable|string|min:8|max:20',
             'roles' => 'required'
-            
+
         ]);
         $data = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ];
-        if(!empty($request->password)){
+        if (!empty($request->password)) {
             $data += [
                 'password' => Hash::make($request->password)
             ];
         }
         $user->update($data);
         $user->syncRoles($request->roles);
-        return redirect('users')->with('status','User updated successfully with roles');
+        return redirect('users')->with('status', 'User updated successfully with roles');
     }
 
     public function destroy($userId)
     {
-        $user=User::findOrFail($userId);
+        $user = User::findOrFail($userId);
         $user->delete();
-        return redirect('users')->with('status','User deleted successfully');
+        return redirect('users')->with('status', 'User deleted successfully');
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,11 +13,13 @@ Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleControll
 Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'givePermissionToRole']);
 
 
+Route::resource('category', CategoryController::class);
+
 Route::resource('users', App\Http\Controllers\UserController::class);
-Route::get('users/{userId}/delete',[App\Http\Controllers\UserController::class, 'destroy'] );
+Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
 
 Route::get('/', function () {
-    return view('frontend.index');
+    return view('welcome');
 });
 
 Route::get('/dashboard', function () {
@@ -29,4 +32,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
