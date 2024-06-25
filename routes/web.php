@@ -3,10 +3,10 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::resource('permissions', app\Http\Controllers\PermissionController::class);
+Route::resource('permissions', App\Http\Controllers\PermissionController::class);
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('frontend.index');
 });
 
 Route::get('/dashboard', function () {
