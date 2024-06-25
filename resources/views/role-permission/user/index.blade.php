@@ -2,7 +2,6 @@
 
 @include('role-permission.nav-link')
 
-
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-12">
@@ -13,8 +12,8 @@
 
             <div class="card mt-3">
                <div class="card-header">
-                    <h4>Permissions
-                        <a href="{{ url('permissions/create') }}" class="btn btn-primary float-end">Add permission</a>
+                    <h4>Users
+                        <a href="{{ url('users/create') }}" class="btn btn-primary float-end">Add user</a>
                     </h4>
                     
                </div> 
@@ -24,17 +23,27 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Name</th>
+                                <th>Email</th>
+                                <th>Roles</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($permissions as $permission)
+                            @foreach ($users as $user)
                               <tr>
-                                <td>{{$permission->id}}</td>
-                                <td>{{$permission->name}}</td>
+                                <td>{{$user->id}}</td>
+                                <td>{{$user->name}}</td>
+                                <td>{{$user->email}}</td>
                                 <td>
-                                    <a href="{{ url('permissions/'.$permission->id.'/edit') }}" class="btn btn-success">Edit</a>
-                                    <a href="{{ url('permissions/'.$permission->id.'/delete') }}" class="btn btn-danger mx-2">Delete</a>
+                                    @if (!empty($user->getRoleNames()))
+                                    @foreach ($user->getRoleNames() as $rolename)
+                                    <label class="badge bg-primary mx-1">{{$rolename}}</label>
+                                    @endforeach
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ url('users/'.$user->id.'/edit') }}" class="btn btn-success">Edit</a>
+                                    <a href="{{ url('users/'.$user->id.'/delete') }}" class="btn btn-danger mx-2">Delete</a>
                                 </td>
                             </tr>
                             @endforeach
