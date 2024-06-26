@@ -6,7 +6,7 @@ use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -34,7 +34,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info($request->all());
         $request->validate([
             'title'=>'required|string|max:255',
             'image'=>'nullable|mimes:png,jpg,jpeg,webp',
@@ -144,4 +143,22 @@ class PostController extends Controller
         $post->delete();
         return redirect('post')->with('status','Post deleted successfully');
     }
-}
+
+    public function storeComment(Request $request, $id)
+    {
+        $request->validate([
+            'body' => 'required|string',
+        ]);
+
+        $post = Post::findOrFail($id);
+
+        $post->comments()->create([
+            'author' => Auth::user()->name,
+            'body' => $request->body,
+            'published' => true,
+        ]);
+
+        return redirect()->route('post.show', $post->id)->with('status', 'Comment added successfully!');
+    }
+    }
+

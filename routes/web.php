@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 Route::resource('permissions', App\Http\Controllers\PermissionController::class);
@@ -17,6 +18,9 @@ Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleControll
 Route::resource('category', CategoryController::class);
 
 Route::resource('post', PostController::class);
+Route::post('/post/{id}/comment', [PostController::class, 'storeComment'])->name('post.comment.store')->middleware('auth');
+Route::delete('/comment/{comment}', [CommentController::class, 'destroy'])->name('comment.destroy')->middleware('auth');
+
 
 Route::resource('users', App\Http\Controllers\UserController::class);
 Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
