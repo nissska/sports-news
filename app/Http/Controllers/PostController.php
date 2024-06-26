@@ -7,12 +7,19 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
-
-class PostController extends Controller
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
+class PostController extends Controller implements HasMiddleware
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:delete post', only: ['destroy']),
+            new Middleware('permission:edit post', only: ['edit', 'update']),
+            new Middleware('permission:create post', only: ['create','store']),
+            new Middleware('permission:create comment', only: ['storeComment'])
+        ];
+    }
     public function index()
     {
         $posts = Post::all()->sortByDesc('created_at');

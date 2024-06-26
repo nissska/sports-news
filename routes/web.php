@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
+Route::group(['middleware' => ['role:admin']], function(){
 Route::resource('permissions', App\Http\Controllers\PermissionController::class);
 Route::get('permissions/{permissionId}/delete', [App\Http\Controllers\PermissionController::class, 'destroy']);
 
@@ -14,16 +15,19 @@ Route::get('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class,
 Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'addPermissionToRole']);
 Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'givePermissionToRole']);
 
+Route::resource('users', App\Http\Controllers\UserController::class);
+Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
 
 Route::resource('category', CategoryController::class);
+});
+
 
 Route::resource('post', PostController::class);
 Route::post('/post/{id}/comment', [PostController::class, 'storeComment'])->name('post.comment.store')->middleware('auth');
 Route::delete('/comment/{comment}', [CommentController::class, 'destroy'])->name('comment.destroy')->middleware('auth');
 
 
-Route::resource('users', App\Http\Controllers\UserController::class);
-Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
+
 
 Route::get('/', [PostController::class, 'index'])->name('post.index');
 

@@ -2,13 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
-class UserController extends Controller
+class UserController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:delete user', only: ['destroy']),
+            new Middleware('permission:edit user', only: ['edit', 'update']),
+            new Middleware('permission:create user', only: ['create','store'])
+        ];
+    }
     public function index()
     {
         $users = User::get();

@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
-
-class CommentController extends Controller
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
+class CommentController extends Controller implements HasMiddleware
 {
-    /**
-     * Remove the specified resource from storage.
-     */
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:delete comment', only: ['destroy'])
+        ];
+    }
     public function destroy(Comment $comment)
     {
         $comment->delete();

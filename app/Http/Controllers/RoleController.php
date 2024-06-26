@@ -2,13 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
 
-class RoleController extends Controller
+class RoleController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:delete role', only: ['destroy']),
+            new Middleware('permission:edit role', only: ['edit', 'update']),
+            new Middleware('permission:add or give permission to role', only: ['addPermissionToRole', 'givePermissionToRole']),
+            new Middleware('permission:create role', only: ['create','store'])
+        ];
+    }
     public function index()
     {
         $roles = Role::get();
