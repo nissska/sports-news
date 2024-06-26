@@ -34,7 +34,6 @@ class CategoryController extends Controller
         $request->validate([
             'name'=>'required|string|max:255',
             'description'=>'required|string|max:255',
-            'status'=>'nullable'
 
         ]);
         Category::create($request->all());
@@ -47,7 +46,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('category.show');
+        return view('category.show', compact('category'));
     }
 
     /**
@@ -66,7 +65,6 @@ class CategoryController extends Controller
         $request->validate([
             'name'=>'required|string|max:255',
             'description'=>'required|string|max:255',
-            'status'=>'nullable'
 
         ]);
         $category->update($request->all());
@@ -79,6 +77,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect('category')->with('status','Category deleted successfully');
     }
 }
