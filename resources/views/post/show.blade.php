@@ -10,6 +10,7 @@
             <div class="card-body">
                 <h2 class="card-title">{{ $post->title }}</h2>
                 <p class="card-text"><small class="text-muted">Author: {{ $post->author }}</small></p>
+                <p class="card-text"><small class="text-muted">{{ $post->category->name }}</small></p>
                 <p class="card-text"><small class="text-muted">Post created at: {{ $post->created_at->format('F j, Y, g:i a') }}</small></p>
                 <hr>
                 <p class="card-text">{{ $post->body }}</p>

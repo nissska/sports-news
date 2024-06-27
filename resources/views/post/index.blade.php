@@ -9,7 +9,7 @@
 <div class="container mt-3 mx-auto w-50">
     <div class="card">
         <div class="row no-gutters">
-            <div class="col-md-4">
+            <div class="col-md-4 d-flex align-items-center">
                 <img src="{{asset($post->image)}}" class="card-img"  alt="Post Image">
             </div>
             <div class="col-md-8">
